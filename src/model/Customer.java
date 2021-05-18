@@ -1,5 +1,7 @@
 package model;
 
+import java.util.regex.Pattern;
+
 public class Customer {
     private String firstName;
     private String lastName;
@@ -8,7 +10,18 @@ public class Customer {
     public Customer(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+
+        if(!isEmailValid(email)) {
+            throw new IllegalArgumentException("Must be valid email");
+        } else {
+            this.email = email;
+        }
+    }
+
+    public boolean isEmailValid(String email) {
+        String extendedRegex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(extendedRegex, Pattern.CASE_INSENSITIVE);
+        return pattern.matcher(email).matches();
     }
 
     @Override
